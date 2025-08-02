@@ -1,0 +1,47 @@
+﻿@inject TestApplicationState AppState
+
+<div class="accordion mt-3" id="appStateAccordion">
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="headingOne">
+            <button class="accordion-button collapsed" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#collapseOne"
+                    aria-expanded="false" aria-controls="collapseOne">
+              Test  Application State 
+            </button>
+        </h2>
+        <div id="collapseOne" class="accordion-collapse collapse"
+             aria-labelledby="headingOne" data-bs-parent="#appStateAccordion">
+            <div class="accordion-body">
+                <dl class="row">
+                    <dt class="col-sm-4">Test String</dt>
+                    <dd class="col-sm-8">@AppState.TestString</dd>
+
+                    <dt class="col-sm-4">Test Integer</dt>
+                    <dd class="col-sm-8">@AppState.TestInt</dd>
+
+                    <dt class="col-sm-4">Current Time</dt>
+                    <dd class="col-sm-8">@AppState.TestDateTime.ToString("f")</dd>
+
+                    <dt class="col-sm-4">List of Items</dt>
+                    <dd class="col-sm-8">
+                        <ul class="list-group">
+                            @foreach (var item in AppState.TestList)
+                            {
+                                <li class="list-group-item">@item</li>
+                            }
+                        </ul>
+                    </dd>
+                </dl>
+
+                <button class="btn btn-primary" @onclick="UpdateTestString">Change Test String</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private void UpdateTestString()
+    {
+        AppState.TestString = "Updated at " + DateTime.Now.ToLongTimeString();
+    }
+}

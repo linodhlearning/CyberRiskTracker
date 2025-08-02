@@ -3,6 +3,7 @@ using CyberRiskTracker.Components;
 using CyberRiskTracker.Data;
 using CyberRiskTracker.Repositories;
 using CyberRiskTracker.Services;
+using CyberRiskTracker.State;
 using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,7 +29,7 @@ else if (storageType == "Blob")
 }
 
 builder.Services.AddScoped<RiskService>();
-
+builder.Services.AddScoped<TestApplicationState>();
 var app = builder.Build();
 if (isInMemorySQL)
     app.Services.InitializeAndSeedInMemDBIfNotFound();

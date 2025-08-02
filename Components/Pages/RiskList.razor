@@ -2,6 +2,7 @@
 @using CyberRiskTracker.Services
 @inject NavigationManager NavigationManager
 @inject RiskService RiskSvc
+@inject TestApplicationState TestAppState
 @rendermode InteractiveServer
 @page "/risks"
 @attribute [StreamRendering(true)]
@@ -13,11 +14,11 @@
 }
 else if (risks.Count == 0)
 {
-
     <label>No data found.</label>
 }
 else
 {
+
     <RiskViewDialog RiskModel="_selectedRisk" SpecialRiskEventClicked="@SpecialRiskEventClicked" OnClose="@ClearRiskModel" />
     <StyledBox BackgroundColor="lavender" TextColor="darkslategray" SectionTitle="Cyber Security Risks">
         <div class="list-group">
@@ -46,4 +47,10 @@ else
             }
         </div>
     </StyledBox>
+    <br />
+
+    <StyledBox BackgroundColor="lightgray" TextColor="green" SectionTitle="Application Test State Display">
+        <TestStateDisplay />
+    </StyledBox>
+
 }
