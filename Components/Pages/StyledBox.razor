@@ -1,0 +1,21 @@
+﻿<div style="border:1px solid;background-color:@BackgroundColor;color:@TextColor;">
+    <h3>@SectionTitle</h3>
+    @ChildContent
+</div>
+@code {
+    [Parameter]
+    public string SectionTitle { get; set; } = "Default";
+
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+    [Parameter]
+    public string? BackgroundColor { get; set; } = "lightblue";
+    [Parameter]
+    public string? TextColor { get; set; } = "black";
+
+    // protected override void OnParametersSet()
+    // {
+    //     base.OnParametersSet();
+    ////    add logic here to handle changes to parameters
+    // }
+}
