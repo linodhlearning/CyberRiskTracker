@@ -1,4 +1,5 @@
 ﻿@using CyberRiskTracker.Models
+@rendermode InteractiveServer // to allow interactive events on the page
 @if (RiskModel != null)
 {
     <div class="modal show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.3);">
@@ -30,9 +31,10 @@
                     }
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-secondary" @onclick="Close">
+                    <button class="btn btn-secondary" @onclick="OnClose">
                         <i class="bi bi-x-circle"></i> Close
-                    </button><button class="btn btn-secondary" @onclick="Focus">
+                    </button>
+                    <button class="btn btn-secondary" @onclick="Focus">
                         <i class="bi bi-x-circle"></i> Focus Me
                     </button>
                 </div>
@@ -44,17 +46,21 @@
 @code {
     [Parameter]
     public RiskItem? RiskModel { get; set; }
-
+    [Parameter]
+    public EventCallback OnClose { get; set; }
+    //demo event callback to   event callback from child to parent
     [Parameter]
     public EventCallback<RiskItem> SpecialRiskEventClicked { get; set; }
-
-    private void Close(EventArgs e)
+      
+    private async Task Close(EventArgs e)
     {
-        RiskModel = null;
+        await OnClose.InvokeAsync(); // notify parent to null RiskModel
     }
 
-    private void Focus(EventArgs e)
+    private async Task Focus(EventArgs e)
     {
-        RiskModel = null;
+        await SpecialRiskEventClicked.InvokeAsync(RiskModel);
+        await OnClose.InvokeAsync(); // also close modal after focus
     }
+
 }

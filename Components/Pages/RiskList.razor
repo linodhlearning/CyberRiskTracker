@@ -16,13 +16,13 @@ else if (risks.Count == 0)
 }
 else
 {
-    <RiskViewDialog RiskModel="_selectedRisk" />
+    <RiskViewDialog RiskModel="_selectedRisk" SpecialRiskEventClicked="@SpecialRiskEventClicked" OnClose="@ClearRiskModel" />
     <div class="list-group">
         @foreach (var risk in risks)
         {
             <ErrorBoundary>
                 <ChildContent>
-                    <div class="list-group-item d-flex align-items-center justify-content-between">
+                    <div class="list-group-item d-flex align-items-center justify-content-between @(GetActiveClass(risk))">
                         <div class="d-flex align-items-center" style="gap: 10px;">
                             <img src="@risk.ImageFullPath" width="50" style="cursor:pointer" @onclick="() => GoToDetail(risk.Id)" alt="@risk.Title" />
                             <a href="@($"risk/{risk.Id}")" class="text-decoration-none fs-5">
