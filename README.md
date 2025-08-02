@@ -33,15 +33,15 @@ This tool providers information around 30+ industry-standard risks (e.g., OWASP 
 
 ## 🛠️ Setup Instructions
 
-### 1. Clone & Build
-
+### 1. Clone & Build 
 ```bash
 git clone https://github.com/your-org/cyber-risk-tracker.git
 cd cyber-risk-tracker
 dotnet restore
 dotnet build
 dotnet run
-
+```
 ### 2.   Run the Application
+```bash
 dotnet run
-
+```
