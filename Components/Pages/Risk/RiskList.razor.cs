@@ -1,6 +1,6 @@
 ﻿using CyberRiskTracker.Models;
 
-namespace CyberRiskTracker.Components.Pages
+namespace CyberRiskTracker.Components.Pages.Risk
 {
     public partial class RiskList
     {
