@@ -1,6 +1,6 @@
 ﻿@page "/risk/{Id:int}"
 @using CyberRiskTracker.Models
-@using CyberRiskTracker.Services 
+@using CyberRiskTracker.Services
 @inject NavigationManager NavigationManager
 @inject RiskService RiskSvc
 @rendermode InteractiveServer
@@ -23,6 +23,14 @@
                     <textarea id="descInput" class="form-control" @bind="risk.Description" rows="4" placeholder="Enter description"></textarea>
                 </div>
 
+                <div class="mb-3">
+                    <label for="descInput" class="form-label">HowItWorks </label>
+                    <textarea id="descInput" class="form-control" @bind="risk.HowItWorks" rows="4" placeholder="Enter How It Works "></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="descInput" class="form-label">Additional Information </label>
+                    <textarea id="descInput" class="form-control" @bind="risk.AdditionalInformation" rows="4" placeholder="Enter Additional Information "></textarea>
+                </div>
                 <div class="mb-3">
                     <label for="imgInput" class="form-label">Image URL</label>
                     <input id="imgInput" class="form-control" @bind="risk.ImageUrl" placeholder="https://..." />
@@ -62,7 +70,7 @@
             NavigationManager.NavigateTo("/risks");
         }
     }
- 
+
     private void Cancel(MouseEventArgs e)
     {
         NavigationManager.NavigateTo("/risks");

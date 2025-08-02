@@ -15,12 +15,72 @@ namespace CyberRiskTracker.Data
 
             context.Risks.AddRange(new List<RiskItem>
         {
-            new RiskItem { Title = "Phishing", Description = "Email/social engineering attack.", ImageUrl = "phishing.png" },
-            new RiskItem { Title = "Ransomware", Description = "Encrypting data for ransom.", ImageUrl = "ransomware.png" },
-            new RiskItem { Title = "SQL Injection", Description = "Manipulate SQL queries.", ImageUrl = "sql.png" },
-            new RiskItem { Title = "XSS", Description = "Cross-site scripting to inject JS.", ImageUrl = "xss.png" },
-            new RiskItem { Title = "Broken Access Control", Description = "Unauthorized access to functions.", ImageUrl = "access.png" },
-            new RiskItem { Title = "Insecure Deserialization", Description = "Execute code via object injection.", ImageUrl = "deserialize.png" },
+         new RiskItem {
+        Title = "Phishing",
+        Description = "Email/social engineering attack.",
+        ImageUrl = "phishing.png",
+        HowItWorks = "Tricks users into clicking malicious links or entering credentials.",
+        AdditionalInformation = """
+        - Common via fake emails or SMS
+        - Often targets employee logins
+        - Can lead to credential theft
+        """
+    },
+    new RiskItem {
+        Title = "Ransomware",
+        Description = "Encrypting data for ransom.",
+        ImageUrl = "ransomware.png",
+        HowItWorks = "Malware encrypts files and demands payment for decryption key.",
+        AdditionalInformation = """
+        - Delivered via email or unpatched systems
+        - Common in healthcare and finance
+        - Increasing in targeted attacks
+        """
+    },
+    new RiskItem {
+        Title = "SQL Injection",
+        Description = "Manipulate SQL queries.",
+        ImageUrl = "sql.png",
+        HowItWorks = "Injects SQL through input fields to access or alter data.",
+        AdditionalInformation = """
+        - Exploits poor input validation
+        - Can dump entire databases
+        - OWASP Top 10 entry
+        """
+    },
+    new RiskItem {
+        Title = "XSS",
+        Description = "Cross-site scripting to inject JS.",
+        ImageUrl = "xss.png",
+        HowItWorks = "Injects malicious JS into webpages viewed by others.",
+        AdditionalInformation = """
+        - Steals cookies or session tokens
+        - Found in comments, forms
+        - Stored, reflected, DOM-based types
+        """
+    },
+    new RiskItem {
+        Title = "Broken Access Control",
+        Description = "Unauthorized access to functions.",
+        ImageUrl = "access.png",
+        HowItWorks = "Lack of proper role checks or authorization logic.",
+        AdditionalInformation = """
+        - Can allow privilege escalation
+        - Common in APIs
+        - OWASP's #1 risk in 2021
+        """
+    },
+    new RiskItem {
+        Title = "Insecure Deserialization",
+        Description = "Execute code via object injection.",
+        ImageUrl = "deserialize.png",
+        HowItWorks = "Accepts untrusted serialized data that can execute code.",
+        AdditionalInformation = """
+        - Remote code execution (RCE) possible
+        - Found in .NET and Java apps
+        - Exploitable through custom object formats
+        """
+    },
             new RiskItem { Title = "Misconfigured Security", Description = "Exposed ports, debug endpoints.", ImageUrl = "misconfig.png" },
             new RiskItem { Title = "Man-in-the-Middle", Description = "Intercept network traffic.", ImageUrl = "mitm.png" },
             new RiskItem { Title = "DoS/DDoS", Description = "Service disruption via flooding.", ImageUrl = "dos.png" },

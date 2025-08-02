@@ -7,6 +7,8 @@
         public string Description { get; set; } = string.Empty;
         public string ImageUrl { get; set; } = string.Empty;
 
+        public string HowItWorks { get; set; } = string.Empty;
+        public string AdditionalInformation { get; set; } = string.Empty;
         public string ImageFullPath { get { return $"/images/{ImageUrl}"; } }
     }
 }
