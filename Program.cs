@@ -27,6 +27,7 @@ else if (storageType == "Blob")
     builder.Services.AddSingleton(new BlobServiceClient(
         builder.Configuration.GetConnectionString("CyberRiskBlobStorage")));
 }
+builder.Services.AddScoped<ILoginAttemptRepository, MockLoginAttemptRepository>();
 
 builder.Services.AddScoped<RiskService>();
 builder.Services.AddScoped<TestApplicationState>();
