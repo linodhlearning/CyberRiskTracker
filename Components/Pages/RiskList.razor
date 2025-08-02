@@ -18,7 +18,13 @@ else if (risks.Count == 0)
 }
 else
 {
+    <div class="row">
+        <div class="col-sm-4">Test String</div>
+        <div class="col-sm-8">@TestAppState.TestString</div>
 
+        <div class="col-sm-4">Test Integer</div>
+        <div class="col-sm-8">@TestAppState.TestInt</div>
+    </div>
     <RiskViewDialog RiskModel="_selectedRisk" SpecialRiskEventClicked="@SpecialRiskEventClicked" OnClose="@ClearRiskModel" />
     <StyledBox BackgroundColor="lavender" TextColor="darkslategray" SectionTitle="Cyber Security Risks">
         <div class="list-group">

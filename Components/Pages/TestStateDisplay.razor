@@ -1,6 +1,4 @@
-﻿@inject TestApplicationState AppState
-
-<div class="accordion mt-3" id="appStateAccordion">
+﻿<div class="accordion mt-3" id="appStateAccordion">
     <div class="accordion-item">
         <h2 class="accordion-header" id="headingOne">
             <button class="accordion-button collapsed" type="button"
@@ -38,10 +36,4 @@
         </div>
     </div>
 </div>
-
-@code {
-    private void UpdateTestString()
-    {
-        AppState.TestString = "Updated at " + DateTime.Now.ToLongTimeString();
-    }
-}
+ 
