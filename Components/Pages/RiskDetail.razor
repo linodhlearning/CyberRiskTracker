@@ -1,0 +1,71 @@
+﻿@page "/risk/{Id:int}"
+@using CyberRiskTracker.Models
+@using CyberRiskTracker.Services 
+@inject NavigationManager NavigationManager
+@inject RiskService RiskSvc
+@rendermode InteractiveServer
+
+@if (risk != null)
+{
+    <div class="container mt-4">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5>Edit Risk: @risk.Title</h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label for="titleInput" class="form-label">Title</label>
+                    <input id="titleInput" class="form-control" @bind="risk.Title" placeholder="Enter title" />
+                </div>
+
+                <div class="mb-3">
+                    <label for="descInput" class="form-label">Description</label>
+                    <textarea id="descInput" class="form-control" @bind="risk.Description" rows="4" placeholder="Enter description"></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label for="imgInput" class="form-label">Image URL</label>
+                    <input id="imgInput" class="form-control" @bind="risk.ImageUrl" placeholder="https://..." />
+                </div>
+
+                @if (!string.IsNullOrWhiteSpace(risk.ImageUrl))
+                {
+                    <div class="mb-3">
+                        <label class="form-label">Preview</label><br />
+                        <img src="@risk.ImageFullPath" alt="Risk preview" class="img-thumbnail" style="max-width: 150px;" />
+                    </div>
+                }
+                <button class="btn btn-secondary" @onclick="Cancel">
+                    <i class="bi bg-info"></i> Cancel
+                </button>
+                <button class="btn btn-success" @onclick="Save">
+                    <i class="bi bi-save"></i> Save Changes
+                </button>
+            </div>
+        </div>
+    </div>
+}
+@code {
+    [Parameter] public int Id { get; set; }
+    private RiskItem? risk;
+
+    protected override async Task OnInitializedAsync()
+    {
+        risk = await RiskSvc.GetRiskByIdAsync(Id);
+    }
+
+    async Task Save()
+    {
+        if (risk != null)
+        {
+            await RiskSvc.SaveRiskAsync(risk);
+            NavigationManager.NavigateTo("/risks");
+        }
+    }
+ 
+    private void Cancel(MouseEventArgs e)
+    {
+        NavigationManager.NavigateTo("/risks");
+    }
+}
+

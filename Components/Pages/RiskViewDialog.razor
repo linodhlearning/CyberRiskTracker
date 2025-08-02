@@ -1,0 +1,60 @@
+﻿@using CyberRiskTracker.Models
+@if (RiskModel != null)
+{
+    <div class="modal show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.3);">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content shadow-sm">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title">View Risk: @RiskModel.Title</h5>
+                    <button type="button" class="btn-close" aria-label="Close" @onclick="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Title:</label>
+                        <div class="form-control-plaintext">@RiskModel.Title</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Description:</label>
+                        <div class="form-control-plaintext">@RiskModel.Description</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Image URL:</label>
+                        <div class="form-control-plaintext">@RiskModel.ImageUrl</div>
+                    </div>
+                    @if (!string.IsNullOrWhiteSpace(RiskModel.ImageUrl))
+                    {
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Preview:</label><br />
+                            <img src="@RiskModel.ImageFullPath" alt="Risk preview" class="img-thumbnail" style="max-width: 150px;" />
+                        </div>
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" @onclick="Close">
+                        <i class="bi bi-x-circle"></i> Close
+                    </button><button class="btn btn-secondary" @onclick="Focus">
+                        <i class="bi bi-x-circle"></i> Focus Me
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public RiskItem? RiskModel { get; set; }
+
+    [Parameter]
+    public EventCallback<RiskItem> SpecialRiskEventClicked { get; set; }
+
+    private void Close(EventArgs e)
+    {
+        RiskModel = null;
+    }
+
+    private void Focus(EventArgs e)
+    {
+        RiskModel = null;
+    }
+}

@@ -1,0 +1,45 @@
+﻿@using CyberRiskTracker.Models
+@using CyberRiskTracker.Services
+@inject NavigationManager NavigationManager
+@inject RiskService RiskSvc
+@rendermode InteractiveServer
+@page "/risks"
+@attribute [StreamRendering(true)]
+<h3>Cyber Security Risks</h3>
+@if (risks == null)
+{
+    <label>Loading...</label>
+}
+else if (risks.Count == 0)
+{
+    <label>No data found.</label>
+}
+else
+{
+    <RiskViewDialog RiskModel="_selectedRisk" />
+    <div class="list-group">
+        @foreach (var risk in risks)
+        {
+            <ErrorBoundary>
+                <ChildContent>
+                    <div class="list-group-item d-flex align-items-center justify-content-between">
+                        <div class="d-flex align-items-center" style="gap: 10px;">
+                            <img src="@risk.ImageFullPath" width="50" style="cursor:pointer" @onclick="() => GoToDetail(risk.Id)" alt="@risk.Title" />
+                            <a href="@($"risk/{risk.Id}")" class="text-decoration-none fs-5">
+                                @risk.Title
+                            </a>
+                        </div>
+                        <button @onclick="() => OpenRiskDialog(risk)" class="btn btn-outline-info btn-sm">
+                            View
+                        </button>
+                    </div>
+                </ChildContent>
+                <ErrorContent>
+                    <div class="border p-4 text-danger">
+                        Sorry, something went wrong.
+                    </div>
+                </ErrorContent>
+            </ErrorBoundary>
+        }
+    </div>
+}
