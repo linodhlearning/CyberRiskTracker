@@ -1,4 +1,6 @@
 ﻿using CyberRiskTracker.Models;
+using static CyberRiskTracker.Models.Enums;
+
 namespace CyberRiskTracker.Data
 {
     public static class RiskDataInitializer
@@ -10,8 +12,37 @@ namespace CyberRiskTracker.Data
 
             // For InMemory, no migration is needed  just ensure database is created
             context.Database.EnsureCreated();
+            SeedRisks(context);
+            SeedAssets(context);
+            context.SaveChanges();
+        }
 
-            if (context.Risks.Any()) return; 
+        private static void SeedAssets(CyberRiskDbContext context)
+        {
+            if (context.Assets.Any()) return;
+            context.Assets.AddRange(new List<Asset> {
+             new Asset { Id = 1, Name = "Payment API", Type = "API", Owner = "Fintech Team", Environment = EnvironmentType.Production, RiskLevel = RiskLevel.Critical, Location = "Azure" },
+                new Asset { Id = 2, Name = "Dev DB", Type = "Database", Owner = "DevOps", Environment = EnvironmentType.Development, RiskLevel = RiskLevel.Medium, Location = "On-Prem" },
+                new Asset { Id = 3, Name = "Web Frontend", Type = "Web App", Owner = "Frontend Team", Environment = EnvironmentType.Staging, RiskLevel = RiskLevel.Medium, Location = "Azure" },
+                new Asset { Id = 4, Name = "Kubernetes Cluster", Type = "Container", Owner = "Platform Team", Environment = EnvironmentType.Production, RiskLevel = RiskLevel.High, Location = "AWS" },
+                new Asset { Id = 5, Name = "Legacy CRM", Type = "Application", Owner = "Sales", Environment = EnvironmentType.Legacy, RiskLevel = RiskLevel.Critical, Location = "Data Center" },
+                new Asset { Id = 6, Name = "QA Database", Type = "Database", Owner = "QA Team", Environment = EnvironmentType.QA, RiskLevel = RiskLevel.Medium, Location = "Azure" },
+                new Asset { Id = 7, Name = "Internal Portal", Type = "Web App", Owner = "HR", Environment = EnvironmentType.Production, RiskLevel = RiskLevel.Low, Location = "Azure" },
+                new Asset { Id = 8, Name = "Jenkins Server", Type = "CI Tool", Owner = "DevOps", Environment = EnvironmentType.Staging, RiskLevel = RiskLevel.High, Location = "AWS" },
+                new Asset { Id = 9, Name = "GitHub Actions", Type = "CI/CD", Owner = "Developers", Environment = EnvironmentType.Production, RiskLevel = RiskLevel.High, Location = "Cloud" },
+                new Asset { Id = 10, Name = "Monitoring Stack", Type = "Observability", Owner = "SRE", Environment = EnvironmentType.Production, RiskLevel = RiskLevel.Medium, Location = "Azure" },
+                new Asset { Id = 11, Name = "Email Gateway", Type = "Service", Owner = "IT", Environment = EnvironmentType.Production, RiskLevel = RiskLevel.High, Location = "On-Prem" },
+                new Asset { Id = 12, Name = "Finance API", Type = "API", Owner = "Finance", Environment = EnvironmentType.Test, RiskLevel = RiskLevel.Medium, Location = "Azure" },
+                new Asset { Id = 13, Name = "SFTP Server", Type = "File Server", Owner = "Operations", Environment = EnvironmentType.Legacy, RiskLevel = RiskLevel.Critical, Location = "Data Center" },
+                new Asset { Id = 14, Name = "Data Warehouse", Type = "Database", Owner = "Analytics", Environment = EnvironmentType.Production, RiskLevel = RiskLevel.Critical, Location = "Azure" },
+                new Asset { Id = 15, Name = "Dev Test Portal", Type = "Web App", Owner = "Dev Team", Environment = EnvironmentType.Test, RiskLevel = RiskLevel.Low, Location = "Local" }
+
+            });
+        }
+
+        private static void SeedRisks(CyberRiskDbContext context)
+        {
+            if (context.Risks.Any()) return;
 
             context.Risks.AddRange(new List<RiskItem>
         {
@@ -105,8 +136,7 @@ namespace CyberRiskTracker.Data
             new RiskItem { Title = "Excessive Permissions", Description = "Users/services with too many rights.", ImageUrl = "perm.png" },
             new RiskItem { Title = "Azure AD Misconfiguration", Description = "Improper tenant setup, weak MFA.", ImageUrl = "aad.png" },
             new RiskItem { Title = "Container Escapes", Description = "Breaking out of Docker/K8s.", ImageUrl = "container.png" }
-        }); 
-            context.SaveChanges();
+        });
         }
-    } 
+    }
 }

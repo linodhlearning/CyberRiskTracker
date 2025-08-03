@@ -1,0 +1,115 @@
+﻿@page "/assets"
+@using CyberRiskTracker.Models
+@using CyberRiskTracker.Services 
+@inject AssetService AssetService
+@rendermode InteractiveServer
+<h3>Asset Management</h3>
+
+@if (!string.IsNullOrWhiteSpace(ErrorMessage))
+{
+    <div class="alert alert-danger">@ErrorMessage</div>
+}
+
+<button class="btn btn-primary mb-3" @onclick="CreateNew">Add Asset</button> 
+
+@if (assets == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Type</th>
+                    <th>Owner</th>
+                    <th>Environment</th>
+                    <th>Risk Level</th>
+                    <th>Location</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var asset in assets)
+                {
+                    <tr>
+                        <td>@asset.Name</td>
+                        <td>@asset.Type</td>
+                        <td>@asset.Owner</td>
+                        <td>@asset.Environment</td>
+                        <td>@asset.RiskLevel</td>
+                        <td>@asset.Location</td>
+                        <td>
+                            <button class="btn btn-sm btn-outline-primary" @onclick="() => Edit(asset)">Edit</button>
+                            <button class="btn btn-sm btn-outline-danger ms-2" @onclick="() => Delete(asset.Id)">Delete</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+@if (showDialog)
+{
+    <AssetDialog AssetModel="selectedAsset" OnValidSubmit="@Save" OnCancel="@CloseDialog" />
+}
+
+@code {
+    private List<Asset>? assets;
+    private Asset selectedAsset = new();
+    private bool showDialog = false;
+    private string? ErrorMessage;
+    protected override async Task OnInitializedAsync()
+    {
+        assets = await AssetService.GetAllAsync();
+    }
+
+    private void CreateNew()
+    {
+        selectedAsset = new();
+        showDialog = true;
+    }
+
+    private void Edit(Asset asset)
+    {
+        selectedAsset = new Asset
+        {
+            Id = asset.Id,
+            Name = asset.Name,
+            Type = asset.Type,
+            Owner = asset.Owner,
+            Environment = asset.Environment,
+            RiskLevel = asset.RiskLevel,
+            Location = asset.Location
+        };
+        showDialog = true;
+    }
+
+    private async Task Save()
+    {
+        try
+        {
+        await AssetService.SaveAsync(selectedAsset);
+        assets = await AssetService.GetAllAsync();
+            showDialog = false;
+        }
+        catch (Exception ex)
+        {
+            ErrorMessage = $"An error occurred while saving: {ex.Message}";
+        }
+    }
+
+    private async Task Delete(int id)
+    {
+        await AssetService.DeleteAsync(id);
+        assets = await AssetService.GetAllAsync();
+    }
+
+    private void CloseDialog()
+    {
+        showDialog = false;
+    }
+}

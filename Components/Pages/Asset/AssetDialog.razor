@@ -1,0 +1,62 @@
+﻿@using CyberRiskTracker.Models
+@using static CyberRiskTracker.Models.Enums
+<EditForm Model="AssetModel" OnValidSubmit="@OnValidSubmit">
+    <DataAnnotationsValidator />
+
+    <div class="modal show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.3);">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Asset Details</h5>
+                    <button type="button" class="btn-close" @onclick="OnCancel" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Name</label>
+                        <InputText class="form-control" @bind-Value="AssetModel.Name" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Type</label>
+                        <InputText class="form-control" @bind-Value="AssetModel.Type" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Owner</label>
+                        <InputText class="form-control" @bind-Value="AssetModel.Owner" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Environment</label>
+                        <InputSelect class="form-select" @bind-Value="AssetModel.Environment">
+                            @foreach (var env in Enum.GetValues<EnvironmentType>())
+                            {
+                                <option value="@env">@env</option>
+                            }
+                        </InputSelect>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Risk Level</label>
+                        <InputSelect class="form-select" @bind-Value="AssetModel.RiskLevel">
+                            @foreach (var level in Enum.GetValues<RiskLevel>())
+                            {
+                                <option value="@level">@level</option>
+                            }
+                        </InputSelect>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Location</label>
+                        <InputText class="form-control" @bind-Value="AssetModel.Location" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Save</button>
+                    <button type="button" class="btn btn-secondary" @onclick="OnCancel">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter] public Asset AssetModel { get; set; } = new();
+    [Parameter] public EventCallback OnValidSubmit { get; set; }
+    [Parameter] public EventCallback OnCancel { get; set; }
+}

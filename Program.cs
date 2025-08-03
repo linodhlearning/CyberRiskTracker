@@ -16,6 +16,7 @@ bool isInMemorySQL = (storageType == "Sql");
 if (isInMemorySQL)
 {
     builder.Services.AddScoped<IRiskRepository, SqlRiskRepository>();
+    builder.Services.AddScoped<IAssetRepository, SqlAssetRepository>();
     //use the factory  to new up the db context for diff components
     builder.Services.AddDbContextFactory<CyberRiskDbContext>(options => options.UseInMemoryDatabase("CyberRiskDb")); 
     //builder.Services.AddDbContext<CyberRiskDbContext>(options =>
@@ -30,6 +31,7 @@ else if (storageType == "Blob")
 builder.Services.AddScoped<ILoginAttemptRepository, MockLoginAttemptRepository>();
 
 builder.Services.AddScoped<RiskService>();
+builder.Services.AddScoped<AssetService>();
 builder.Services.AddScoped<TestApplicationState>();
 var app = builder.Build();
 if (isInMemorySQL)
