@@ -7,6 +7,18 @@
 
 @if (risk != null)
 {
+
+    <EditForm Enhance Model="risk" FormName="UploadImage" OnValidSubmit="@UploadImageAsync" method="post">
+        <div class="mb-3">
+            <label for="imgInput" class="form-label">Select Image  </label>
+            <InputFile OnChange="@OnInputFileChange" />
+        </div>
+        <button type="submit" class="btn btn-success">
+            <i class="bi bi-save"></i> Save
+        </button>
+    </EditForm>
+
+
     <div class="container mt-4">
         <div class="card shadow-sm">
             <div class="card-header bg-primary text-white">
@@ -36,11 +48,13 @@
                     <input id="imgInput" class="form-control" @bind="risk.ImageUrl" placeholder="https://..." />
                 </div>
 
+
                 @if (!string.IsNullOrWhiteSpace(risk.ImageUrl))
                 {
                     <div class="mb-3">
                         <label class="form-label">Preview</label><br />
-                        <img src="@risk.ImageFullPath" alt="Risk preview" class="img-thumbnail" style="max-width: 150px;" />
+                        <img src="@risk.ImageFullPath" alt="Risk preview" class="img-thumbnail" style="max-width: 150px;" /> |
+                        <img src="@risk.ImageUrl" alt="Risk preview" class="img-thumbnail" style="max-width: 150px;" />
                     </div>
                 }
                 <button class="btn btn-secondary" @onclick="Cancel">
@@ -56,6 +70,8 @@
 @code {
     [Parameter] public int Id { get; set; }
     private RiskItem? risk;
+    private bool imageUploaded;
+    private IBrowserFile selectedFile;
 
     protected override async Task OnInitializedAsync()
     {
@@ -66,6 +82,7 @@
     {
         if (risk != null)
         {
+            // await UploadImageAsync();
             await RiskSvc.SaveRiskAsync(risk);
             NavigationManager.NavigateTo("/risks");
         }
@@ -75,5 +92,28 @@
     {
         NavigationManager.NavigateTo("/risks");
     }
+    private void OnInputFileChange(InputFileChangeEventArgs e)
+    {
+        selectedFile = e.File;
+        StateHasChanged();
+    }
+
+    private async Task UploadImageAsync()
+    {
+        if (risk == null) return;
+        if (selectedFile != null)
+        {
+            var file = selectedFile;
+              Stream stream = file.OpenReadStream();
+              MemoryStream ms = new();
+            await stream.CopyToAsync(ms);
+            stream.Close();
+            risk.ImageName = file.Name;
+            risk.ImageContent = ms.ToArray();
+         await RiskSvc.UploadRiskImageAsync(risk);
+            imageUploaded = true;
+        }
+    }
+
 }
 

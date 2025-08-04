@@ -10,5 +10,8 @@
         public string HowItWorks { get; set; } = string.Empty;
         public string AdditionalInformation { get; set; } = string.Empty;
         public string ImageFullPath { get { return $"/images/{ImageUrl}"; } }
+
+        public string ImageName { get; set; } = string.Empty;
+        public byte[]? ImageContent { get; set; } = null;
     }
 }

@@ -29,6 +29,7 @@ else if (storageType == "Blob")
         builder.Configuration.GetConnectionString("CyberRiskBlobStorage")));
 }
 builder.Services.AddScoped<ILoginAttemptRepository, MockLoginAttemptRepository>();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 builder.Services.AddScoped<RiskService>();
 builder.Services.AddScoped<AssetService>();
