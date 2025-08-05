@@ -25,9 +25,27 @@ namespace CyberRiskTracker.Repositories
 
         public async Task SaveAsync(RiskItemEntity risk)
         {
-            _db.Risks.Update(risk);
+            if (risk.Id == 0)
+            {
+                _db.Risks.Add(risk);
+            }
+            else
+            {
+                var existing = await _db.Risks.FindAsync(risk.Id);
+                if (existing != null)
+                {
+                    _db.Entry(existing).CurrentValues.SetValues(risk);
+                }
+                else
+                {
+                    _db.Risks.Attach(risk);
+                    _db.Entry(risk).State = EntityState.Modified;
+                }
+            }
+
             await _db.SaveChangesAsync();
         }
+
 
         public async Task DeleteAsync(int id)
         {

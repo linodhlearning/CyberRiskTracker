@@ -7,6 +7,7 @@ using CyberRiskTracker.Services;
 using CyberRiskTracker.State;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -26,7 +27,17 @@ if (isInMemorySQL)
     builder.Services.AddScoped<IRiskRepository, SqlRiskRepository>();
     builder.Services.AddScoped<IAssetRepository, SqlAssetRepository>();
     //use the factory  to new up the db context for diff components
-    builder.Services.AddDbContextFactory<CyberRiskDbContext>(options => options.UseInMemoryDatabase("CyberRiskDb")); 
+    builder.Services.AddDbContextFactory<CyberRiskDbContext>(options =>
+    {
+        options.UseInMemoryDatabase("CyberRiskDb");
+        if (builder.Environment.IsDevelopment())
+        {
+            options.EnableSensitiveDataLogging();
+            options.EnableDetailedErrors(); // optional
+        }
+    }
+    
+    ); 
     //builder.Services.AddDbContext<CyberRiskDbContext>(options =>
     //    options.UseInMemoryDatabase("CyberRiskDb"));
 }

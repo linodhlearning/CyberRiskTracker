@@ -18,7 +18,10 @@
         </button>
     </EditForm>
 
-
+    @if (!string.IsNullOrEmpty(ErrorMessage))
+    {
+        <strong>@ErrorMessage</strong>
+    }
     <div class="container mt-4">
         <div class="card shadow-sm">
             <div class="card-header bg-primary text-white">
@@ -66,54 +69,5 @@
             </div>
         </div>
     </div>
-}
-@code {
-    [Parameter] public int Id { get; set; }
-    private RiskItem? risk;
-    private bool imageUploaded;
-    private IBrowserFile selectedFile;
-
-    protected override async Task OnInitializedAsync()
-    {
-        risk = await RiskSvc.GetRiskByIdAsync(Id);
-    }
-
-    async Task Save()
-    {
-        if (risk != null)
-        {
-            // await UploadImageAsync();
-            await RiskSvc.SaveRiskAsync(risk);
-            NavigationManager.NavigateTo("/risks");
-        }
-    }
-
-    private void Cancel(MouseEventArgs e)
-    {
-        NavigationManager.NavigateTo("/risks");
-    }
-    private void OnInputFileChange(InputFileChangeEventArgs e)
-    {
-        selectedFile = e.File;
-        StateHasChanged();
-    }
-
-    private async Task UploadImageAsync()
-    {
-        if (risk == null) return;
-        if (selectedFile != null)
-        {
-            var file = selectedFile;
-              Stream stream = file.OpenReadStream();
-              MemoryStream ms = new();
-            await stream.CopyToAsync(ms);
-            stream.Close();
-            risk.ImageName = file.Name;
-            risk.ImageContent = ms.ToArray();
-         await RiskSvc.UploadRiskImageAsync(risk);
-            imageUploaded = true;
-        }
-    }
-
-}
+} 
 

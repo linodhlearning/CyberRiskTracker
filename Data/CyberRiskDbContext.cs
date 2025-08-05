@@ -1,18 +1,28 @@
 ﻿using CyberRiskTracker.Data.Entities;
-using Microsoft.EntityFrameworkCore; 
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 
 namespace CyberRiskTracker.Data
 {
     public class CyberRiskDbContext : DbContext
     {
-        public CyberRiskDbContext(DbContextOptions<CyberRiskDbContext> options)
-            : base(options)
+        private readonly IHostEnvironment? _env;
+        public CyberRiskDbContext(DbContextOptions<CyberRiskDbContext> options, IHostEnvironment? env = null)
+        : base(options)
         {
+            _env = env;
         }
 
         public DbSet<RiskItemEntity> Risks { get; set; }
         public DbSet<AssetEntity> Assets { get; set; }
         public DbSet<LoginAttemptEntity> LoginAttempts { get; set; }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (_env != null && _env.IsDevelopment())
+            {
+                optionsBuilder.EnableSensitiveDataLogging();
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
