@@ -1,5 +1,4 @@
-﻿@using CyberRiskTracker.Models
-@rendermode InteractiveServer // to allow interactive events on the page
+﻿@rendermode InteractiveServer // to allow interactive events on the page
 @if (RiskModel != null)
 {
     <div class="modal show d-block" tabindex="-1"  >
@@ -42,7 +41,7 @@
                     <button class="btn btn-secondary" @onclick="OnClose">
                         <i class="bi bi-x-circle"></i> Close
                     </button>
-                    <button class="btn btn-secondary" @onclick="Focus">
+                    <button class="btn btn-primary" @onclick="Focus">
                         <i class="bi bi-x-circle"></i> Focus Me
                     </button>
                 </div>
