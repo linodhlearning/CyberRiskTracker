@@ -1,16 +1,24 @@
 using Azure.Storage.Blobs;
 using CyberRiskTracker.Components;
 using CyberRiskTracker.Data;
+using CyberRiskTracker.Mapping;
 using CyberRiskTracker.Repositories;
 using CyberRiskTracker.Services;
 using CyberRiskTracker.State;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
-
+ 
+builder.Services.AddAutoMapper(cfg =>
+{
+    cfg.AddProfile<CyberRiskMappingProfile>();
+    cfg.LicenseKey = builder.Configuration["Automapper:LicenseKey"];
+});
+ 
 var storageType = builder.Configuration["Storage:Type"] ?? "Sql";
 bool isInMemorySQL = (storageType == "Sql");
 if (isInMemorySQL)

@@ -1,12 +1,12 @@
-﻿using CyberRiskTracker.Models;
+﻿using CyberRiskTracker.Data.Entities; 
 
 namespace CyberRiskTracker.Repositories
 {
     public interface IRiskRepository
     {
-        Task<List<RiskItem>> GetAllAsync();
-        Task<RiskItem?> GetByIdAsync(int id);
-        Task SaveAsync(RiskItem risk);
+        Task<List<RiskItemEntity>> GetAllAsync();
+        Task<RiskItemEntity?> GetByIdAsync(int id);
+        Task SaveAsync(RiskItemEntity risk);
         Task DeleteAsync(int id);
     }
 }

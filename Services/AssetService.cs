@@ -1,19 +1,37 @@
-﻿namespace CyberRiskTracker.Services
-{
-    using CyberRiskTracker.Models;
-    using CyberRiskTracker.Repositories;
+﻿
+using AutoMapper;
+using CyberRiskTracker.Data.Entities; 
+using CyberRiskTracker.Models;
+using CyberRiskTracker.Repositories;
 
+namespace CyberRiskTracker.Services
+{
     public class AssetService
     {
         private readonly IAssetRepository _repository;
+        private readonly IMapper _mapper;
 
-        public AssetService(IAssetRepository repository)
+        public AssetService(IAssetRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
 
-        public Task<List<Asset>> GetAllAsync() => _repository.GetAllAsync();
-        public Task SaveAsync(Asset asset) => _repository.SaveAsync(asset);
-        public Task DeleteAsync(int id) => _repository.DeleteAsync(id);
+        public async Task<List<Asset>> GetAllAsync()
+        {
+            var entities = await _repository.GetAllAsync();
+            return _mapper.Map<List<Asset>>(entities);
+        }
+
+        public async Task SaveAsync(Asset asset)
+        {
+            var entity = _mapper.Map<AssetEntity>(asset);
+            await _repository.SaveAsync(entity);
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            await _repository.DeleteAsync(id);
+        }
     }
 }

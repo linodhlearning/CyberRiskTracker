@@ -1,5 +1,5 @@
 ﻿using CyberRiskTracker.Data;
-using CyberRiskTracker.Models;
+using CyberRiskTracker.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace CyberRiskTracker.Repositories
@@ -13,17 +13,17 @@ namespace CyberRiskTracker.Repositories
             _db = db;
         }
 
-        public async Task<List<RiskItem>> GetAllAsync()
+        public async Task<List<RiskItemEntity>> GetAllAsync()
         {
-            return await _db.Risks.ToListAsync();
+            return await _db.Risks.AsNoTracking().ToListAsync();
         }
 
-        public async Task<RiskItem?> GetByIdAsync(int id)
+        public async Task<RiskItemEntity?> GetByIdAsync(int id)
         {
-            return await _db.Risks.FindAsync(id);
+            return await _db.Risks.AsNoTracking().FirstOrDefaultAsync(r => r.Id == id);
         }
 
-        public async Task SaveAsync(RiskItem risk)
+        public async Task SaveAsync(RiskItemEntity risk)
         {
             _db.Risks.Update(risk);
             await _db.SaveChangesAsync();

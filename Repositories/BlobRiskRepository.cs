@@ -1,6 +1,5 @@
 ﻿using Azure.Storage.Blobs;
-using CyberRiskTracker.Models;
-using System;
+using CyberRiskTracker.Data.Entities; 
 using System.Text.Json;
 
 namespace CyberRiskTracker.Repositories
@@ -16,24 +15,24 @@ namespace CyberRiskTracker.Repositories
             _container.CreateIfNotExists();
         }
 
-        public async Task<List<RiskItem>> GetAllAsync()
+        public async Task<List<RiskItemEntity>> GetAllAsync()
         {
             var blob = _container.GetBlobClient(ListBlob);
             if (await blob.ExistsAsync())
             {
                 var response = await blob.DownloadContentAsync();
-                return JsonSerializer.Deserialize<List<RiskItem>>(response.Value.Content.ToString())!;
+                return JsonSerializer.Deserialize<List<RiskItemEntity>>(response.Value.Content.ToString())!;
             }
-            return new List<RiskItem>();
+            return new List<RiskItemEntity>();
         }
 
-        public async Task<RiskItem?> GetByIdAsync(int id)
+        public async Task<RiskItemEntity?> GetByIdAsync(int id)
         {
             var risks = await GetAllAsync();
             return risks.FirstOrDefault(r => r.Id == id);
         }
 
-        public async Task SaveAsync(RiskItem risk)
+        public async Task SaveAsync(RiskItemEntity risk)
         {
             var risks = await GetAllAsync();
             var existing = risks.FirstOrDefault(r => r.Id == risk.Id);

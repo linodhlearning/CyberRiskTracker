@@ -1,15 +1,14 @@
-﻿
-using CyberRiskTracker.Data;
-using CyberRiskTracker.Models;
+﻿using CyberRiskTracker.Data;
+using CyberRiskTracker.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace CyberRiskTracker.Repositories
 {
     public interface IAssetRepository
     {
-        Task<List<Asset>> GetAllAsync();
-        Task<Asset?> GetByIdAsync(int id);
-        Task SaveAsync(Asset asset);
+        Task<List<AssetEntity>> GetAllAsync();
+        Task<AssetEntity?> GetByIdAsync(int id);
+        Task SaveAsync(AssetEntity asset);
         Task DeleteAsync(int id);
     }
 
@@ -22,17 +21,17 @@ namespace CyberRiskTracker.Repositories
             _db = db;
         }
 
-        public async Task<List<Asset>> GetAllAsync()
+        public async Task<List<AssetEntity>> GetAllAsync()
         {
-            return await _db.Assets.ToListAsync();
+            return await _db.Assets.AsNoTracking().ToListAsync();
         }
 
-        public async Task<Asset?> GetByIdAsync(int id)
+        public async Task<AssetEntity?> GetByIdAsync(int id)
         {
-            return await _db.Assets.FindAsync(id);
+            return await _db.Assets.AsNoTracking().FirstOrDefaultAsync(r => r.Id == id);
         }
 
-        public async Task SaveAsync(Asset asset)
+        public async Task SaveAsync(AssetEntity asset)
         {
             if (asset.Id == 0)
             {
